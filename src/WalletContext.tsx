@@ -1,12 +1,13 @@
 import React, { createContext, useState } from 'react';
 import { ethers } from 'ethers';
 import { NETWORKS } from './constants';
+import TransactionController from './controllers/TransactionController';
 
 type WalletContextValue = {
   account?: string,
   setAccount?: any,
   provider?: ethers.providers.JsonRpcProvider,
-  setProvider?: any,
+  transactionsController?: TransactionController,
 };
 
 export const WalletContext = createContext<WalletContextValue>({
@@ -24,14 +25,20 @@ export function WalletProvider({ children } : Props) {
   const localProviderUrl = targetProvider.rpcUrl;
   const provider = new ethers.providers.JsonRpcProvider(localProviderUrl);
 
-  if (!localStorage.getItem('privateKey')) {
-    const { privateKey } = ethers.Wallet.createRandom();
+  let privateKey = localStorage.getItem('privateKey');
+  if (!privateKey) {
+    privateKey = ethers.Wallet.createRandom().privateKey;
     localStorage.setItem('privateKey', privateKey);
   }
 
+  const transactionsController = new TransactionController(provider, privateKey);
+
   const value = React.useMemo(() => ({
-    account, setAccount, provider,
-  }), [account, provider, setAccount]);
+    account,
+    setAccount,
+    provider,
+    transactionsController,
+  }), [account, provider, setAccount, transactionsController]);
 
   return (
     // this is the provider providing state
