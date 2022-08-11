@@ -21,7 +21,7 @@ import usePoller from './Poller';
   - If no pollTime is passed, the balance will update on every new block
 */
 
-const DEBUG = false;
+// const DEBUG = false;
 
 export default function useBalance(provider: any, address: any, pollTime = 0) {
   const [balance, setBalance] = useState();
@@ -50,7 +50,7 @@ export default function useBalance(provider: any, address: any, pollTime = 0) {
   usePoller(
     async () => {
       if (provider && address && pollTime > 0) {
-        if (DEBUG) console.log('polling!', address);
+        // if (DEBUG) console.log('polling!', address);
         // @ts-ignore
         pollBalance();
       }

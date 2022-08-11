@@ -28,7 +28,8 @@ module.exports = {
   },
   ignorePatterns: [
     '.eslintrc.js',
-    'postcss.config.js',
     'tailwind.config.js',
+    'config-overrides.js',
+    'postcss.config.js'
   ]
 };

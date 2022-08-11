@@ -4,7 +4,7 @@
 import { useEffect, useRef } from 'react';
 
 // helper hook to call a function regularly in time intervals
-const DEBUG = false;
+// const DEBUG = false;
 
 export default function useOnBlock(provider: any, fn: any, args: any) {
   const savedCallback = useRef();
@@ -16,8 +16,8 @@ export default function useOnBlock(provider: any, fn: any, args: any) {
   // Turn on the listener if we have a function & a provider
   useEffect((): any => {
     if (fn && provider) {
-      const listener = (blockNumber: any) => {
-        if (DEBUG) console.log(blockNumber, fn, args, provider.listeners());
+      const listener = () => {
+        // if (DEBUG) console.log(blockNumber, fn, args, provider.listeners());
 
         if (args && args.length > 0) {
           // @ts-ignore
