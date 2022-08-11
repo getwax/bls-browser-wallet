@@ -20,13 +20,18 @@ function BlsWallet() {
   };
 
   return (
-    <div className="bg-blue-400 rounded-xl w-1/2">
+    <div className="">
       <p>
         Eth Balance:
         {' '}
         {balance ? ethers.utils.formatEther(balance) : 0}
       </p>
-      { balance && <button type="button" onClick={sendEth}>Attempt Send</button> }
+      { balance
+        && (
+        <button type="button" onClick={sendEth} className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+          Send Eth
+        </button>
+        )}
     </div>
   );
 }

@@ -22,7 +22,7 @@ function Address() {
   }, [provider]);
 
   return (
-    <div className="bg-blue-400 rounded-xl w-1/2">
+    <div className="">
       <p>
         BLS public key:
         {' '}
