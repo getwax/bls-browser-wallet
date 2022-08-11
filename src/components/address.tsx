@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { BlsWalletWrapper } from 'bls-wallet-clients';
+import { QRCodeSVG } from 'qrcode.react';
 
 import { WalletContext } from '../WalletContext';
 
@@ -22,7 +23,9 @@ function Address() {
   }, [provider]);
 
   return (
-    <div className="">
+    <div className="flex items-center flex-col">
+      {account
+        && <QRCodeSVG value={account} size={256} />}
       <p>
         BLS public key:
         {' '}

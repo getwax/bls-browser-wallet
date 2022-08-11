@@ -13,6 +13,7 @@
     "bls-wallet-clients": "^0.6.0",
     "eslint": "^8.21.0",
     "ethers": "^5.6.9",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",

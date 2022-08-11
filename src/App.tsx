@@ -9,12 +9,11 @@ function App() {
   return (
     <div className="gradient min-h-screen">
       <Header />
-      <div className="pt-24 flex flex-row flex-wrap md:flex-nowrap">
-        <div className="basis-1/2 m-6 p-6">
-          Network: localhost
-        </div>
-        <div className="basis-1/2 bg-white rounded m-6 p-6">
+      <div className="container mx-auto pt-24 flex flex-row flex-wrap md:flex-nowrap">
+        <div className="basis-1/2 bg-white rounded p-6">
           <Address />
+        </div>
+        <div className="basis-1/2 p-6">
           <BlsWallet />
         </div>
       </div>
