@@ -8,7 +8,7 @@ function Header() {
           className="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
           href="https://blswallet.org/"
         >
-          BURNER BLS
+          INSTANT BLS
         </a>
         <p className="inline-block py-2 px-4 text-black font-bold no-underline">Network: localhost</p>
       </div>

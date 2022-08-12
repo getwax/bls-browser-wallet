@@ -10,7 +10,7 @@ function App() {
     <div className="gradient min-h-screen">
       <Header />
       <div className="container mx-auto pt-24 flex flex-row flex-wrap md:flex-nowrap">
-        <div className="basis-1/2 bg-white rounded p-6">
+        <div className="basis-1/2 rounded p-6">
           <Address />
         </div>
         <div className="basis-1/2 p-6">

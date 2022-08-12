@@ -13,14 +13,14 @@ function BlsWallet() {
   const sendEth = async () => {
     const tx: SendTransactionParams = {
       value: '0x0de0b6b3a7640000',
-      to: '0xDd0eeEbF38014075DeCca511E38885Cf94a5A3E5',
+      to: '0x0e3bE91B78Ac85f05C856C4d0FB029753A4eDfd9',
     };
 
-    await transactionsController?.sendTransaction([tx]);
+    await transactionsController.sendTransaction([tx]);
   };
 
   return (
-    <div className="">
+    <div>
       <p>
         Eth Balance:
         {' '}
@@ -29,7 +29,7 @@ function BlsWallet() {
       { balance
         && (
         <button type="button" onClick={sendEth} className="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-          Send Eth
+          Send ETH
         </button>
         )}
     </div>

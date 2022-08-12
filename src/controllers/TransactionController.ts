@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { Aggregator, BlsWalletWrapper } from 'bls-wallet-clients';
-import { NETWORK_CONFIG } from '../constants';
+import { NETWORK_CONFIG, AGGREGATOR_URL } from '../constants';
 
 export type SendTransactionParams = {
   to: string,
@@ -13,7 +13,7 @@ export type SendTransactionParams = {
 
 export default class TransactionController {
   constructor(
-    public ethersProvider: ethers.providers.Provider,
+    public ethersProvider: ethers.providers.JsonRpcProvider,
     public privateKey: string,
   ) {}
 
@@ -43,7 +43,7 @@ export default class TransactionController {
     ).toString();
     const bundle = await wallet.sign({ nonce, actions });
 
-    const agg = new Aggregator('http://localhost:3000');
+    const agg = new Aggregator(AGGREGATOR_URL);
     const result = await agg.add(bundle);
 
     if ('failures' in result) {
