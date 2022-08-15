@@ -54,4 +54,10 @@ export default class TransactionController {
 
     return result.hash;
   };
+
+  getAddress = async () => BlsWalletWrapper.Address(
+    this.privateKey,
+    NETWORK_CONFIG.addresses.verificationGateway,
+    this.ethersProvider,
+  );
 }
