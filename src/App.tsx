@@ -3,7 +3,7 @@ import React from 'react';
 import './App.css';
 import Header from './components/header';
 import Address from './components/address';
-import BlsWallet from './components/blsWallet';
+import Send from './components/send';
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
           <Address />
         </div>
         <div className="basis-1/2 p-6">
-          <BlsWallet />
+          <Send />
         </div>
       </div>
     </div>

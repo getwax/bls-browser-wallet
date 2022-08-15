@@ -5,8 +5,8 @@ import { useEffect, useRef } from 'react';
 
 // helper hook to call a function regularly in time intervals
 
-export default function usePoller(fn?: any, delay?: any, extraWatch?: any) {
-  const savedCallback = useRef();
+export default function usePoller(fn: any, delay: any, extraWatch: any) {
+  const savedCallback = useRef<any>();
   // Remember the latest fn.
   useEffect(() => {
     savedCallback.current = fn;
@@ -15,7 +15,6 @@ export default function usePoller(fn?: any, delay?: any, extraWatch?: any) {
   // eslint-disable-next-line consistent-return
   useEffect(() => {
     function tick() {
-      // @ts-ignore
       savedCallback.current();
     }
     if (delay !== null) {

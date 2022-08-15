@@ -55,6 +55,25 @@ export default class TransactionController {
     return result.hash;
   };
 
+  static getTransactionReceipt = async (hash: string) => {
+    const aggregator = new Aggregator(AGGREGATOR_URL);
+    const bundleReceipt: any = await aggregator.lookupReceipt(hash);
+
+    return (
+      bundleReceipt && {
+        transactionHash: hash,
+        transactionIndex: bundleReceipt.transactionIndex,
+        blockHash: bundleReceipt.blockHash,
+        blockNumber: bundleReceipt.blockNumber,
+        logs: [],
+        cumulativeGasUsed: '0x0',
+        gasUsed: '0x0',
+        status: '0x1',
+        effectiveGasPrice: '0x0',
+      }
+    );
+  };
+
   getAddress = async () => BlsWalletWrapper.Address(
     this.privateKey,
     NETWORK_CONFIG.addresses.verificationGateway,

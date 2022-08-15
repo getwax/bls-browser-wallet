@@ -3,17 +3,21 @@ import { ethers } from 'ethers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 
-import { useBalance } from '../hooks';
+import { useBalance, useTxStatus } from '../hooks';
 import { WalletContext } from '../WalletContext';
 import { SendTransactionParams } from '../controllers/TransactionController';
 
-function BlsWallet() {
+function Send() {
   const [sendAmount, setSendAmount] = useState<string>('');
   const [sendAddress, setSendAddress] = useState<string>('');
+  const [txHash, setTxHash] = useState<string>('');
   const [loading, setLoading] = useState(false);
+
   const { provider, account, transactionsController } = useContext(WalletContext);
 
   const balance = useBalance(provider, account);
+  const status = useTxStatus(provider, transactionsController, txHash);
+  console.log({ status });
 
   const sendEth = async () => {
     setLoading(true);
@@ -23,7 +27,9 @@ function BlsWallet() {
       to: sendAddress,
     };
 
-    await transactionsController.sendTransaction([tx]);
+    const hash = await transactionsController.sendTransaction([tx]);
+
+    setTxHash(hash);
     setLoading(false);
     setSendAmount('');
   };
@@ -75,4 +81,4 @@ function BlsWallet() {
   );
 }
 
-export default BlsWallet;
+export default Send;
