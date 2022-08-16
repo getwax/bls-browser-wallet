@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import './App.css';
+import { toast, ToastContainer } from 'react-toastify';
 import Header from './components/header';
 import Address from './components/address';
 import Send from './components/send';
+import { ToastContext } from './ToastContext';
 
 function App() {
+  const { message, setMessage } = useContext(ToastContext);
+  useEffect(() => {
+    if (message) {
+      toast.info(message);
+    }
+    setMessage('');
+  }, [setMessage, message]);
+
   return (
     <div className="gradient min-h-screen">
       <Header />
@@ -17,6 +27,7 @@ function App() {
           <Send />
         </div>
       </div>
+      <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} autoClose={2000} hideProgressBar />
     </div>
   );
 }

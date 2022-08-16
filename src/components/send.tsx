@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useContext, useState } from 'react';
+import React, {
+  ChangeEvent, useContext, useState,
+} from 'react';
 import { ethers } from 'ethers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
@@ -6,18 +8,18 @@ import TextField from '@mui/material/TextField';
 import { useBalance, useTxStatus } from '../hooks';
 import { WalletContext } from '../WalletContext';
 import { SendTransactionParams } from '../controllers/TransactionController';
+import { ToastContext } from '../ToastContext';
 
 function Send() {
   const [sendAmount, setSendAmount] = useState<string>('');
   const [sendAddress, setSendAddress] = useState<string>('');
   const [txHash, setTxHash] = useState<string>('');
   const [loading, setLoading] = useState(false);
-
+  const { setMessage } = useContext(ToastContext);
   const { provider, account, transactionsController } = useContext(WalletContext);
 
   const balance = useBalance(provider, account);
-  const status = useTxStatus(provider, transactionsController, txHash);
-  console.log({ status });
+  useTxStatus(provider, transactionsController, txHash);
 
   const sendEth = async () => {
     setLoading(true);
@@ -29,6 +31,7 @@ function Send() {
 
     const hash = await transactionsController.sendTransaction([tx]);
 
+    setMessage('Transaction submitted');
     setTxHash(hash);
     setLoading(false);
     setSendAmount('');

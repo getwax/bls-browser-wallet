@@ -25,6 +25,7 @@ module.exports = {
     '@typescript-eslint/space-before-blocks': 'off',
     'no-param-reassign': 'off',
     'import/prefer-default-export': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
   ignorePatterns: [
     '.eslintrc.js',
