@@ -1,46 +1,35 @@
-# Getting Started with Create React App
+# BLS Burner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An opensource simple Ethereum burner wallet that uses BLS signature aggregation.
+**Important:** This wallet is currently only meant for demoing the uses of the bls-wallet-client module
+and is not meant for mainnet use.
 
-## Available Scripts
+## Local development setup
 
-In the project directory, you can run:
+**BLS Wallet**
 
+Check out the [bls-wallet](https://github.com/web3well/bls-wallet) repository and follow
+the steps in the Readme for local development. 
+
+Note: you can skip the step to set up the Quill extension as BLS Burner is meant to run without
+an external wallet.
+
+After following the `bls-wallet` setup steps, you should have
+- A local hardhat node running.
+- Deploy the necessary contracts.
+- Started a Deno server that is running the aggregator.
+- Optional: you can skip the step to set up the Quill wallet.
+
+**BLS Burner**
+
+You can now start up the Burner wallet
+
+### `yarn install`
 ### `yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+You can learn more at the [BLS wallet website](https://blswallet.org/).

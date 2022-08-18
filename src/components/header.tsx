@@ -26,7 +26,7 @@ function Header() {
           className="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
           href="https://blswallet.org/"
         >
-          INSTANT BLS
+          BLS BURNER
         </a>
         <img src={logo} alt="Logo" />
         <div className="ml-auto">
