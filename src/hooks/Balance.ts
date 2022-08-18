@@ -2,6 +2,7 @@
 // use some clean up and better typing.
 
 import { useCallback, useState } from 'react';
+import { ethers } from 'ethers';
 import useOnBlock from './OnBlock';
 import usePoller from './Poller';
 
@@ -23,15 +24,21 @@ import usePoller from './Poller';
 
 // const DEBUG = false;
 
-export default function useBalance(provider: any, address: any, pollTime = 0) {
-  const [balance, setBalance] = useState();
+export default function useBalance(
+  provider: ethers.providers.JsonRpcProvider,
+  address: string,
+  pollTime = 0,
+) {
+  const [balance, setBalance] = useState('');
 
   const pollBalance = useCallback(
-    async (providerr: any, addresss: any) => {
-      if (providerr && address) {
-        const newBalance = await providerr.getBalance(addresss);
-        if (newBalance !== balance) {
-          setBalance(newBalance);
+    async (rpcProvider?: ethers.providers.JsonRpcProvider, userAddress?: string) => {
+      if (rpcProvider && userAddress) {
+        const newBalance = await rpcProvider.getBalance(userAddress);
+        const formattedBalance = ethers.utils.formatEther(newBalance);
+        console.log(formattedBalance);
+        if (formattedBalance !== balance) {
+          setBalance(formattedBalance);
         }
       }
     },
@@ -39,8 +46,7 @@ export default function useBalance(provider: any, address: any, pollTime = 0) {
   );
 
   // Only pass a provider to watch on a block if there is no pollTime
-  // @ts-ignore
-  useOnBlock(pollTime === 0 && provider, () => {
+  useOnBlock(provider, () => {
     if (provider && address && pollTime === 0) {
       pollBalance(provider, address);
     }
@@ -50,9 +56,9 @@ export default function useBalance(provider: any, address: any, pollTime = 0) {
   usePoller(
     async () => {
       if (provider && address && pollTime > 0) {
+        console.log({ provider });
         // if (DEBUG) console.log('polling!', address);
-        // @ts-ignore
-        pollBalance();
+        pollBalance(provider, address);
       }
     },
     pollTime,

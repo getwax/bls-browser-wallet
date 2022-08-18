@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { Aggregator, BlsWalletWrapper } from 'bls-wallet-clients';
-import { NETWORK_CONFIG, AGGREGATOR_URL } from '../constants';
+import { getNetwork } from '../constants';
 
 export type SendTransactionParams = {
   to: string,
@@ -10,6 +10,11 @@ export type SendTransactionParams = {
   value?: string,
   data?: string,
 };
+
+function findNetwork() {
+  const networkName = localStorage.getItem('selectedNetwork') || 'localhost';
+  return getNetwork(networkName);
+}
 
 export default class TransactionController {
   constructor(
@@ -30,20 +35,20 @@ export default class TransactionController {
 
     const wallet = await BlsWalletWrapper.connect(
       this.privateKey,
-      NETWORK_CONFIG.addresses.verificationGateway,
+      findNetwork().verificationGateway,
       this.ethersProvider,
     );
 
     const nonce = (
       await BlsWalletWrapper.Nonce(
         wallet.PublicKey(),
-        NETWORK_CONFIG.addresses.verificationGateway,
+        findNetwork().verificationGateway,
         this.ethersProvider,
       )
     ).toString();
     const bundle = await wallet.sign({ nonce, actions });
 
-    const agg = new Aggregator(AGGREGATOR_URL);
+    const agg = new Aggregator(findNetwork().aggregatorUrl);
     const result = await agg.add(bundle);
 
     if ('failures' in result) {
@@ -56,7 +61,7 @@ export default class TransactionController {
   };
 
   static getTransactionReceipt = async (hash: string) => {
-    const aggregator = new Aggregator(AGGREGATOR_URL);
+    const aggregator = new Aggregator(findNetwork().aggregatorUrl);
     const bundleReceipt: any = await aggregator.lookupReceipt(hash);
 
     return (
@@ -76,7 +81,13 @@ export default class TransactionController {
 
   getAddress = async () => BlsWalletWrapper.Address(
     this.privateKey,
-    NETWORK_CONFIG.addresses.verificationGateway,
+    findNetwork().verificationGateway,
     this.ethersProvider,
   );
+
+  setNetwork = async (network: string) => {
+    localStorage.setItem('selectedNetwork', network);
+    const localProviderUrl = findNetwork().rpcUrl;
+    this.ethersProvider = new ethers.providers.JsonRpcProvider(localProviderUrl);
+  };
 }

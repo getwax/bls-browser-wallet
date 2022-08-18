@@ -2,19 +2,26 @@
 // use some clean up and better typing.
 
 import { useEffect, useRef } from 'react';
+import { ethers } from 'ethers';
 
 // helper hook to call a function regularly in time intervals
 // const DEBUG = false;
 
-export default function useOnBlock(provider: any, fn: any, args: any) {
-  const savedCallback = useRef();
+export default function useOnBlock(
+  provider: ethers.providers.JsonRpcProvider,
+  fn?: () => void,
+  args: any[] = [],
+) {
+  const savedCallback = useRef(() => {});
   // Remember the latest fn.
   useEffect(() => {
-    savedCallback.current = fn;
+    if (fn) {
+      savedCallback.current = fn;
+    }
   }, [fn]);
 
   // Turn on the listener if we have a function & a provider
-  useEffect((): any => {
+  useEffect(() => {
     if (fn && provider) {
       const listener = () => {
         // if (DEBUG) console.log(blockNumber, fn, args, provider.listeners());
@@ -23,7 +30,6 @@ export default function useOnBlock(provider: any, fn: any, args: any) {
           // @ts-ignore
           savedCallback.current(...args);
         } else {
-          // @ts-ignore
           savedCallback.current();
         }
       };

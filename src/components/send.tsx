@@ -16,9 +16,10 @@ function Send() {
   const [txHash, setTxHash] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const { setMessage } = useContext(ToastContext);
-  const { provider, account, transactionsController } = useContext(WalletContext);
+  const { state, transactionsController } = useContext(WalletContext);
+  const { provider, account } = state;
 
-  const balance = useBalance(provider, account);
+  const balance = useBalance(provider, account, 5000);
   useTxStatus(provider, transactionsController, txHash);
 
   const sendEth = async () => {
@@ -52,7 +53,7 @@ function Send() {
         <p className="text-left">
           Eth Balance:
           {' '}
-          {balance ? ethers.utils.formatEther(balance) : 0}
+          {balance}
         </p>
         <TextField
           className="w-52"

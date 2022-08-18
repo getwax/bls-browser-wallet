@@ -1,21 +1,34 @@
-export const NETWORKS = {
+type NetworkConfigType = {
+  name: string,
+  chainId: string,
+  rpcUrl: string,
+  aggregatorUrl: string,
+  verificationGateway: string,
+};
+
+type NetworksType = {
+  [key: string]: NetworkConfigType,
+};
+
+export const NETWORKS: NetworksType = {
   localhost: {
     name: 'localhost',
-    color: '#666666',
-    price: 'uniswap', // use mainnet eth price for localhost
-    chainId: 31337,
-    blockExplorer: '',
+    chainId: '31337',
     rpcUrl: 'http://localhost:8545',
-  },
-};
-
-export const NETWORK_CONFIG = {
-  addresses: {
+    aggregatorUrl: 'http://localhost:3000',
     verificationGateway: '0xa15954659EFce154a3B45cE88D8158A02bE2049A',
   },
+  arbitrumRinkeby: {
+    chainId: '421611', // 42161
+    name: 'Arbitrum Rinkeby',
+    rpcUrl: 'https://rinkeby.arbitrum.io/rpc',
+    aggregatorUrl: 'https://arbitrum-testnet.blswallet.org',
+    verificationGateway: '0x697B3E6258B08201d316b31D69805B5F666b62C8',
+  },
 };
 
-export const AGGREGATOR_URL = 'http://localhost:3000';
+export function getNetwork(networkName: string) {
+  return NETWORKS[networkName];
+}
 
-export const TOKEN_CONTRACT = '0x0165878A594ca255338adfa4d48449f69242Eb8F';
-export const SPENDER_CONTRACT = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853';
+export const currentNetwork = 'localhost';
