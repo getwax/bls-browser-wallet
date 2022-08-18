@@ -30,6 +30,10 @@ You can now start up the Burner wallet
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+## Testnet development setup
+
+TODO: Arbitrum Rinkeby setup
+
 ## Learn More
 
 You can learn more at the [BLS wallet website](https://blswallet.org/).
