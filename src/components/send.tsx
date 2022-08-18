@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 
-import { useBalance, useTxStatus } from '../hooks';
+import { useTxStatus } from '../hooks';
 import { WalletContext } from '../WalletContext';
 import { SendTransactionParams } from '../controllers/TransactionController';
 import { ToastContext } from '../ToastContext';
@@ -15,11 +15,11 @@ function Send() {
   const [sendAddress, setSendAddress] = useState<string>('');
   const [txHash, setTxHash] = useState<string>('');
   const [loading, setLoading] = useState(false);
+
   const { setMessage } = useContext(ToastContext);
   const { state, transactionsController } = useContext(WalletContext);
-  const { provider, account } = state;
+  const { provider } = state;
 
-  const balance = useBalance(provider, account, 5000);
   useTxStatus(provider, transactionsController, txHash);
 
   const sendEth = async () => {
@@ -50,11 +50,6 @@ function Send() {
   return (
     <div>
       <div className="flex flex-col gap-2">
-        <p className="text-left">
-          Eth Balance:
-          {' '}
-          {balance}
-        </p>
         <TextField
           className="w-52"
           variant="filled"

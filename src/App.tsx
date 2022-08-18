@@ -6,6 +6,7 @@ import Header from './components/header';
 import Address from './components/address';
 import Send from './components/send';
 import { ToastContext } from './ToastContext';
+import Balance from './components/balance';
 
 function App() {
   const { message, setMessage } = useContext(ToastContext);
@@ -19,7 +20,10 @@ function App() {
   return (
     <div className="gradient min-h-screen">
       <Header />
-      <div className="container mx-auto pt-24 flex flex-row flex-wrap md:flex-nowrap">
+      <div className="container mx-auto pt-24">
+        <Balance />
+      </div>
+      <div className="container mx-auto flex flex-row flex-wrap md:flex-nowrap">
         <div className="basis-1/2 rounded p-6">
           <Address />
         </div>
