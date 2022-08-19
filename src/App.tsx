@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="gradient min-h-screen">
       <Header />
-      <div className="container mx-auto pt-24">
+      <div className="container mx-auto pt-6">
         <Balance />
       </div>
       <div className="container mx-auto flex flex-row flex-wrap md:flex-nowrap">
