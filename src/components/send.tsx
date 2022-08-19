@@ -5,22 +5,19 @@ import { ethers } from 'ethers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 
-import { useTxStatus } from '../hooks';
 import { WalletContext } from '../WalletContext';
 import { SendTransactionParams } from '../controllers/TransactionController';
 import { ToastContext } from '../ToastContext';
+import TxStatus from './txStatus';
 
 function Send() {
   const [sendAmount, setSendAmount] = useState<string>('');
   const [sendAddress, setSendAddress] = useState<string>('');
-  const [txHash, setTxHash] = useState<string>('');
+  const [pendingTxs, setPendingTxs] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const { setMessage } = useContext(ToastContext);
-  const { state, transactionsController } = useContext(WalletContext);
-  const { provider } = state;
-
-  useTxStatus(provider, transactionsController, txHash);
+  const { transactionsController } = useContext(WalletContext);
 
   const sendEth = async () => {
     setLoading(true);
@@ -33,7 +30,7 @@ function Send() {
     const hash = await transactionsController.sendTransaction([tx]);
 
     setMessage('Transaction submitted');
-    setTxHash(hash);
+    setPendingTxs([...pendingTxs, hash]);
     setLoading(false);
     setSendAmount('');
   };
@@ -45,6 +42,11 @@ function Send() {
     }
 
     return sendAmount;
+  };
+
+  const removePendingTxs = (hash: string) => {
+    const newPendingTxs = pendingTxs.filter((tx) => tx !== hash);
+    setPendingTxs(newPendingTxs);
   };
 
   return (
@@ -76,6 +78,9 @@ function Send() {
           </LoadingButton>
         </div>
       </div>
+      {pendingTxs.map((tx) => (
+        <TxStatus setTxFinished={removePendingTxs} txHash={tx} key={tx} />
+      ))}
     </div>
   );
 }

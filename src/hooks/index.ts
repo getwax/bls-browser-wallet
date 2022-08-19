@@ -1,2 +1,2 @@
-export { default as useBalance } from './Balance';
-export { default as useTxStatus } from './TxStatus';
+export { default as useInterval } from './UseInterval';
+export { default as useOnBlock } from './UseOnBlock';
