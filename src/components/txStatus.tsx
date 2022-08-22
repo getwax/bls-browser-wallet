@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { useInterval } from '../hooks';
-import TransactionController from '../controllers/TransactionController';
+import { getTransactionReceipt } from '../controllers/TransactionController';
 import { ToastContext } from '../ToastContext';
 
 type TxStatusProps = {
@@ -15,7 +15,7 @@ function TxStatus({ setTxFinished, txHash }: TxStatusProps) {
   const { setMessage } = useContext(ToastContext);
 
   useInterval(async () => {
-    const receipt = await TransactionController.getTransactionReceipt(txHash);
+    const receipt = await getTransactionReceipt(txHash);
 
     if (receipt === undefined) {
       return;

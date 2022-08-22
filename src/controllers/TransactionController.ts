@@ -1,8 +1,7 @@
-import { ethers } from 'ethers';
 import { Aggregator, BlsWalletWrapper } from 'bls-wallet-clients';
 
 import { getNetwork } from '../constants';
-import { useStore } from '../store';
+import { useLocalStore, useProvider } from '../store';
 
 export type SendTransactionParams = {
   to: string,
@@ -14,83 +13,74 @@ export type SendTransactionParams = {
 };
 
 function findNetwork() {
-  const { network } = useStore.getState();
+  const { network } = useLocalStore.getState();
   return getNetwork(network);
 }
 
-export default class TransactionController {
-  constructor(
-    public ethersProvider: ethers.providers.JsonRpcProvider,
-  ) {}
+export const sendTransaction = async (
+  params: SendTransactionParams[],
+) => {
+  // TODO: Implement user transaction approval
+  const actions = params.map((tx) => ({
+    ethValue: tx.value ?? '0',
+    contractAddress: tx.to,
+    encodedFunction: tx.data ?? '0x',
+  }));
 
-  sendTransaction = async (
-    params: SendTransactionParams[],
-  ) => {
-    // TODO: Implement user transaction approval
-    const actions = params.map((tx) => ({
-      ethValue: tx.value ?? '0',
-      contractAddress: tx.to,
-      encodedFunction: tx.data ?? '0x',
-    }));
+  const { privateKey } = useLocalStore.getState();
+  const { provider } = useProvider.getState();
+  const wallet = await BlsWalletWrapper.connect(
+    privateKey,
+    findNetwork().verificationGateway,
+    provider,
+  );
 
-    const { privateKey } = useStore.getState();
-    const wallet = await BlsWalletWrapper.connect(
-      privateKey,
+  const nonce = (
+    await BlsWalletWrapper.Nonce(
+      wallet.PublicKey(),
       findNetwork().verificationGateway,
-      this.ethersProvider,
-    );
+      provider,
+    )
+  ).toString();
+  const bundle = await wallet.sign({ nonce, actions });
 
-    const nonce = (
-      await BlsWalletWrapper.Nonce(
-        wallet.PublicKey(),
-        findNetwork().verificationGateway,
-        this.ethersProvider,
-      )
-    ).toString();
-    const bundle = await wallet.sign({ nonce, actions });
+  const agg = new Aggregator(findNetwork().aggregatorUrl);
+  const result = await agg.add(bundle);
 
-    const agg = new Aggregator(findNetwork().aggregatorUrl);
-    const result = await agg.add(bundle);
+  if ('failures' in result) {
+    throw new Error(JSON.stringify(result));
+  }
 
-    if ('failures' in result) {
-      throw new Error(JSON.stringify(result));
+  // Todo: maybe persist known transactions?
+
+  return result.hash;
+};
+
+export const getTransactionReceipt = async (hash: string) => {
+  const aggregator = new Aggregator(findNetwork().aggregatorUrl);
+  const bundleReceipt: any = await aggregator.lookupReceipt(hash);
+
+  return (
+    bundleReceipt && {
+      transactionHash: hash,
+      transactionIndex: bundleReceipt.transactionIndex,
+      blockHash: bundleReceipt.blockHash,
+      blockNumber: bundleReceipt.blockNumber,
+      logs: [],
+      cumulativeGasUsed: '0x0',
+      gasUsed: '0x0',
+      status: '0x1',
+      effectiveGasPrice: '0x0',
     }
+  );
+};
 
-    // Todo: maybe persist known transactions?
-
-    return result.hash;
-  };
-
-  static getTransactionReceipt = async (hash: string) => {
-    const aggregator = new Aggregator(findNetwork().aggregatorUrl);
-    const bundleReceipt: any = await aggregator.lookupReceipt(hash);
-
-    return (
-      bundleReceipt && {
-        transactionHash: hash,
-        transactionIndex: bundleReceipt.transactionIndex,
-        blockHash: bundleReceipt.blockHash,
-        blockNumber: bundleReceipt.blockNumber,
-        logs: [],
-        cumulativeGasUsed: '0x0',
-        gasUsed: '0x0',
-        status: '0x1',
-        effectiveGasPrice: '0x0',
-      }
-    );
-  };
-
-  getAddress = async () => {
-    const { privateKey } = useStore.getState();
-    return BlsWalletWrapper.Address(
-      privateKey,
-      findNetwork().verificationGateway,
-      this.ethersProvider,
-    );
-  };
-
-  updateProvider = async () => {
-    const localProviderUrl = findNetwork().rpcUrl;
-    this.ethersProvider = new ethers.providers.JsonRpcProvider(localProviderUrl);
-  };
-}
+export const getAddress = async () => {
+  const { privateKey } = useLocalStore.getState();
+  const { provider } = useProvider.getState();
+  return BlsWalletWrapper.Address(
+    privateKey,
+    findNetwork().verificationGateway,
+    provider,
+  );
+};

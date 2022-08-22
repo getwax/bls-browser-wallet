@@ -1,22 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { getAddress } from '../controllers/TransactionController';
 import { NETWORKS } from '../constants';
 import logo from '../assets/logo.png';
-import { WalletContext } from '../WalletContext';
-import { setAccount, setNetwork, useStore } from '../store';
+import { setAccount, setNetwork, useLocalStore } from '../store';
 
 function Header() {
-  const { transactionsController } = useContext(WalletContext);
-  const network = useStore((state) => state.network);
+  const network = useLocalStore((state) => state.network);
 
   const handleChange = async (event: SelectChangeEvent) => {
     setNetwork(event.target.value);
-    await transactionsController.updateProvider();
-    const address = await transactionsController.getAddress();
+    const address = await getAddress();
     setAccount(address);
   };
 

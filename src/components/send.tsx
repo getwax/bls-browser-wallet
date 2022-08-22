@@ -5,8 +5,7 @@ import { ethers } from 'ethers';
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 
-import { WalletContext } from '../WalletContext';
-import { SendTransactionParams } from '../controllers/TransactionController';
+import { SendTransactionParams, sendTransaction } from '../controllers/TransactionController';
 import { ToastContext } from '../ToastContext';
 import TxStatus from './txStatus';
 
@@ -17,7 +16,6 @@ function Send() {
   const [loading, setLoading] = useState(false);
 
   const { setMessage } = useContext(ToastContext);
-  const { transactionsController } = useContext(WalletContext);
 
   const sendEth = async () => {
     setLoading(true);
@@ -27,7 +25,7 @@ function Send() {
       to: sendAddress,
     };
 
-    const hash = await transactionsController.sendTransaction([tx]);
+    const hash = await sendTransaction([tx]);
 
     setMessage('Transaction submitted');
     setPendingTxs([...pendingTxs, hash]);
