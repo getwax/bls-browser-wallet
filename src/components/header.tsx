@@ -7,16 +7,17 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { NETWORKS } from '../constants';
 import logo from '../assets/logo.png';
 import { WalletContext } from '../WalletContext';
-import { setAccount, setNetwork } from '../store/actions';
+import { setAccount, setNetwork, useStore } from '../store';
 
 function Header() {
-  const { state, dispatch, transactionsController } = useContext(WalletContext);
+  const { transactionsController } = useContext(WalletContext);
+  const network = useStore((state) => state.network);
 
   const handleChange = async (event: SelectChangeEvent) => {
-    setNetwork(dispatch, event.target.value);
-    await transactionsController.setNetwork(event.target.value);
+    setNetwork(event.target.value);
+    await transactionsController.updateProvider();
     const address = await transactionsController.getAddress();
-    setAccount(dispatch, address);
+    setAccount(address);
   };
 
   return (
@@ -35,7 +36,7 @@ function Header() {
             <Select
               labelId="network-select"
               id="network-select-id"
-              value={state.network}
+              value={network}
               onChange={handleChange}
               label="Network"
             >

@@ -1,8 +1,7 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext } from 'react';
 import { ethers } from 'ethers';
 import { getNetwork } from './constants';
 import TransactionController from './controllers/TransactionController';
-import { reducer } from './store';
 
 type WalletContextValue = ReturnType<typeof getContextValue>;
 
@@ -22,52 +21,19 @@ function getProvider(): ethers.providers.JsonRpcProvider {
   return new ethers.providers.JsonRpcProvider(localProviderUrl);
 }
 
-function getPrivateKey(): string {
-  const PK_LOCAL_STORAGE_KEY = 'privateKey';
-  let privateKey = localStorage.getItem(PK_LOCAL_STORAGE_KEY);
-  if (!privateKey) {
-    privateKey = ethers.Wallet.createRandom().privateKey;
-    localStorage.setItem(PK_LOCAL_STORAGE_KEY, privateKey);
-  }
-  return privateKey;
-}
-
-// TODO: I need a cleaner state management
 function getContextValue() {
-  const networkName = localStorage.getItem('selectedNetwork') || 'localhost';
   const provider = getProvider();
-  const privateKey = getPrivateKey();
-  const transactionsController = new TransactionController(provider, privateKey);
-
-  const initialState = {
-    network: networkName,
-    account: '',
-    provider,
-  };
-
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const transactionsController = new TransactionController(provider);
 
   return {
-    state,
-    dispatch,
     transactionsController,
   };
 }
 
 export function WalletProvider({ children } : Props) {
-  const {
-    state,
-    dispatch,
-    transactionsController,
-  } = getContextValue();
+  const { transactionsController } = getContextValue();
 
-  const value = React.useMemo(() => ({
-    state,
-    dispatch,
-    transactionsController,
-  }), [
-    state,
-    dispatch,
+  const value = React.useMemo(() => ({ transactionsController }), [
     transactionsController,
   ]);
 

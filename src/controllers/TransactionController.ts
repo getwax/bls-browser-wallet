@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
 import { Aggregator, BlsWalletWrapper } from 'bls-wallet-clients';
+
 import { getNetwork } from '../constants';
+import { useStore } from '../store';
 
 export type SendTransactionParams = {
   to: string,
@@ -12,29 +14,28 @@ export type SendTransactionParams = {
 };
 
 function findNetwork() {
-  const networkName = localStorage.getItem('selectedNetwork') || 'localhost';
-  return getNetwork(networkName);
+  const { network } = useStore.getState();
+  return getNetwork(network);
 }
 
 export default class TransactionController {
   constructor(
     public ethersProvider: ethers.providers.JsonRpcProvider,
-    public privateKey: string,
   ) {}
 
   sendTransaction = async (
     params: SendTransactionParams[],
   ) => {
     // TODO: Implement user transaction approval
-
     const actions = params.map((tx) => ({
       ethValue: tx.value ?? '0',
       contractAddress: tx.to,
       encodedFunction: tx.data ?? '0x',
     }));
 
+    const { privateKey } = useStore.getState();
     const wallet = await BlsWalletWrapper.connect(
-      this.privateKey,
+      privateKey,
       findNetwork().verificationGateway,
       this.ethersProvider,
     );
@@ -79,14 +80,16 @@ export default class TransactionController {
     );
   };
 
-  getAddress = async () => BlsWalletWrapper.Address(
-    this.privateKey,
-    findNetwork().verificationGateway,
-    this.ethersProvider,
-  );
+  getAddress = async () => {
+    const { privateKey } = useStore.getState();
+    return BlsWalletWrapper.Address(
+      privateKey,
+      findNetwork().verificationGateway,
+      this.ethersProvider,
+    );
+  };
 
-  setNetwork = async (network: string) => {
-    localStorage.setItem('selectedNetwork', network);
+  updateProvider = async () => {
     const localProviderUrl = findNetwork().rpcUrl;
     this.ethersProvider = new ethers.providers.JsonRpcProvider(localProviderUrl);
   };

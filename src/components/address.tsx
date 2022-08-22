@@ -2,18 +2,18 @@ import React, { useContext, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 
 import { WalletContext } from '../WalletContext';
-import { setAccount } from '../store/actions';
+import { setAccount, useStore } from '../store';
 
 function Address() {
   const {
-    state, dispatch, transactionsController,
+    transactionsController,
   } = useContext(WalletContext);
-  const { account } = state;
+  const account = useStore((state) => state.account);
 
   useEffect(() => {
     const getAddress = async () => {
       const address = await transactionsController.getAddress();
-      setAccount(dispatch, address);
+      setAccount(address);
     };
     getAddress();
   }, [setAccount]);

@@ -2,19 +2,23 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 
 import { WalletContext } from '../WalletContext';
+import { useStore } from '../store';
 import { useOnBlock } from '../hooks';
 
 function Balance() {
   const [balance, setBalance] = useState('');
-  const { state } = useContext(WalletContext);
-  const { provider, account } = state;
+  const { transactionsController } = useContext(WalletContext);
+  const { account, network } = useStore((state) => ({
+    account: state.account,
+    network: state.network,
+  }));
 
   useEffect(() => {
     // Get balance when account is first set or changes
     getBalance();
-  }, [account]);
+  }, [account, network]);
 
-  useOnBlock(provider, () => {
+  useOnBlock(transactionsController.ethersProvider, () => {
     // Get balance on a new block
     getBalance();
   });
@@ -23,7 +27,7 @@ function Balance() {
     if (!account) {
       return;
     }
-    const newBalance = await provider.getBalance(account);
+    const newBalance = await transactionsController.ethersProvider.getBalance(account);
     const formattedBalance = ethers.utils.formatEther(newBalance);
 
     if (formattedBalance !== balance) {
