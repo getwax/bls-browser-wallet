@@ -18,7 +18,7 @@ function App() {
   }, [setMessage, message]);
 
   return (
-    <div className="gradient min-h-screen">
+    <div className="bg-grey-100 min-h-screen">
       <Header />
       <div className="container mx-auto pt-6">
         <Balance />
