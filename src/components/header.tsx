@@ -3,11 +3,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { PenNibStraight } from 'phosphor-react';
 
 import { getAddress } from '../controllers/TransactionController';
 import { NETWORKS } from '../constants';
-import logo from '../assets/logo.png';
 import { setAccount, setNetwork, useLocalStore } from '../store';
+import Recovery from './recovery';
 
 function Header() {
   const network = useLocalStore((state) => state.network);
@@ -27,7 +28,7 @@ function Header() {
         >
           BLS BURNER
         </a>
-        <img src={logo} alt="Logo" />
+        <PenNibStraight weight="duotone" size={28} color="#60a5fa" />
         <div className="ml-auto">
           <FormControl className="ml-auto" variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="network-select">Network</InputLabel>
@@ -44,6 +45,7 @@ function Header() {
             </Select>
           </FormControl>
         </div>
+        <Recovery />
       </div>
       <hr className="border-b border-gray-100 opacity-25 my-0 py-0" />
     </div>

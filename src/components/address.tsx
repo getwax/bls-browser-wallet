@@ -3,6 +3,7 @@ import { QRCodeSVG } from 'qrcode.react';
 
 import { getAddress } from '../controllers/TransactionController';
 import { setAccount, useLocalStore } from '../store';
+import TextAddress from './textAddress';
 
 function Address() {
   const account = useLocalStore((state) => state.account);
@@ -21,7 +22,9 @@ function Address() {
         && (
           <div className="p-6 bg-white items-center flex flex-col">
             <QRCodeSVG value={account} size={256} />
-            <p>{account}</p>
+            <div className="mt-4">
+              <TextAddress address={account} />
+            </div>
           </div>
         )}
     </div>

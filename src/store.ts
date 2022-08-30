@@ -9,6 +9,7 @@ export const useLocalStore = create(
       network: 'localhost',
       account: '',
       privateKey: ethers.Wallet.createRandom().privateKey,
+      recoveryHash: '', // TODO: make work with other multiple networks
     }),
     {
       name: 'persistedStorage',
@@ -21,6 +22,9 @@ export const setNetwork = (network: string) => {
   updateProvider();
 };
 export const setAccount = (account: string) => useLocalStore.setState(() => ({ account }));
+export const setRecoveryHash = (recoveryHash: string) => useLocalStore.setState(
+  () => ({ recoveryHash }),
+);
 
 export const useProvider = create(() => {
   const { network } = useLocalStore.getState();
