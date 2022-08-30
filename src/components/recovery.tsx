@@ -24,7 +24,7 @@ function Recovery() {
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [salt, setSalt] = useState('');
-  const recoveryHash = useLocalStore((state) => state.recoveryHash);
+  const recoveryHash = useLocalStore((state) => state.recoveryHash[state.network]);
 
   const setRecovery = async () => {
     const hash = await createRecoveryHash(address, salt);

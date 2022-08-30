@@ -3,13 +3,22 @@ import { persist } from 'zustand/middleware';
 import { ethers } from 'ethers';
 import { getNetwork } from './constants';
 
-export const useLocalStore = create(
+type LocalStoreType = {
+  network: string,
+  account: string,
+  privateKey: string,
+  recoveryHash: {
+    [key: string]: string,
+  },
+};
+
+export const useLocalStore = create<LocalStoreType, any>(
   persist(
     () => ({
       network: 'localhost',
       account: '',
       privateKey: ethers.Wallet.createRandom().privateKey,
-      recoveryHash: '', // TODO: make work with other multiple networks
+      recoveryHash: {},
     }),
     {
       name: 'persistedStorage',
@@ -22,9 +31,13 @@ export const setNetwork = (network: string) => {
   updateProvider();
 };
 export const setAccount = (account: string) => useLocalStore.setState(() => ({ account }));
-export const setRecoveryHash = (recoveryHash: string) => useLocalStore.setState(
-  () => ({ recoveryHash }),
-);
+export const setRecoveryHash = (hash: string) => {
+  const { network, recoveryHash } = useLocalStore.getState();
+  const newRecoveryHash = { ...recoveryHash, [network]: hash };
+  useLocalStore.setState(
+    () => ({ recoveryHash: newRecoveryHash }),
+  );
+};
 
 export const useProvider = create(() => {
   const { network } = useLocalStore.getState();
