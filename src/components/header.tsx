@@ -26,7 +26,7 @@ function Header() {
           className="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
           href="https://blswallet.org/"
         >
-          BLS BURNER
+          INSTANT BLS
         </a>
         <PenNibStraight weight="duotone" size={28} color="#60a5fa" />
         <div className="ml-auto">
