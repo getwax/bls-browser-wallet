@@ -7,7 +7,7 @@ type LocalStoreType = {
   network: string,
   account: string,
   privateKey: string,
-  recoveryHash: {
+  recoverySalt: {
     [key: string]: string,
   },
 };
@@ -18,7 +18,7 @@ export const useLocalStore = create<LocalStoreType, any>(
       network: 'localhost',
       account: '',
       privateKey: ethers.Wallet.createRandom().privateKey,
-      recoveryHash: {},
+      recoverySalt: {},
     }),
     {
       name: 'persistedStorage',
@@ -31,11 +31,11 @@ export const setNetwork = (network: string) => {
   updateProvider();
 };
 export const setAccount = (account: string) => useLocalStore.setState(() => ({ account }));
-export const setRecoveryHash = (hash: string) => {
-  const { network, recoveryHash } = useLocalStore.getState();
-  const newRecoveryHash = { ...recoveryHash, [network]: hash };
+export const setRecoverySalt = (hash: string) => {
+  const { network, recoverySalt } = useLocalStore.getState();
+  const newRecoverySalt = { ...recoverySalt, [network]: hash };
   useLocalStore.setState(
-    () => ({ recoveryHash: newRecoveryHash }),
+    () => ({ recoverySalt: newRecoverySalt }),
   );
 };
 

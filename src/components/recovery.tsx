@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { ethers } from 'ethers';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
@@ -6,7 +7,9 @@ import Box from '@mui/material/Box';
 
 import TextAddress from './textAddress';
 import { createRecoveryHash } from '../controllers/TransactionController';
-import { setRecoveryHash, useLocalStore } from '../store';
+import { setRecoverySalt, useLocalStore } from '../store';
+import { ToastContext } from '../ToastContext';
+import CopyText from './copyText';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -24,17 +27,39 @@ function Recovery() {
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [salt, setSalt] = useState('');
-  const recoveryHash = useLocalStore((state) => state.recoveryHash[state.network]);
+  const [saltError, setSaltError] = useState(false);
+  const { setMessage } = useContext(ToastContext);
+  const { recoverySalt, account } = useLocalStore((state) => ({
+    recoverySalt: state.recoverySalt[state.network],
+    account: state.account,
+  }));
 
   const setRecovery = async () => {
-    const hash = await createRecoveryHash(address, salt);
-    setRecoveryHash(hash);
+    let saltBytes32String;
+    try {
+      saltBytes32String = ethers.utils.formatBytes32String(salt);
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+    await createRecoveryHash(address, saltBytes32String);
+    setRecoverySalt(salt);
     setAddress('');
     setSalt('');
+    setMessage('Transaction successful');
   };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleUpdateSalt = (newSalt: string) => {
+    try {
+      ethers.utils.formatBytes32String(newSalt);
+      setSaltError(false);
+    } catch (err) {
+      setSaltError(true);
+    }
+    setSalt(newSalt);
+  };
 
   return (
     <div className="ml-4 mr-4">
@@ -55,26 +80,34 @@ function Recovery() {
               onChange={(event) => setAddress(event.target.value)}
             />
             <TextField
+              error={saltError}
               className="w-52"
               variant="filled"
               label="Salt"
               value={salt}
-              onChange={(event) => setSalt(event.target.value)}
+              onChange={(event) => handleUpdateSalt(event.target.value)}
+              helperText={saltError ? 'To many characters' : ''}
             />
             <Button
               variant="contained"
               onClick={setRecovery}
-              disabled={!salt || !address}
+              disabled={!salt || !address || saltError}
             >
-              {recoveryHash ? 'Update' : 'Set'}
+              {recoverySalt ? 'Update' : 'Set'}
               {' '}
               Recovery Hash
             </Button>
-            {recoveryHash && (
+            {recoverySalt && (
               <>
-                <hr />
-                <p>Current recovery hash:</p>
-                <TextAddress address={recoveryHash} />
+                <p>To recover this wallet, copy the below info to your Quill wallet</p>
+                <div className="flex flex-row w-64 items-center">
+                  <p className="mr-auto">Wallet address:</p>
+                  <TextAddress address={account} />
+                </div>
+                <div className="flex flex-row w-64 items-center">
+                  <p className="mr-auto">Salt:</p>
+                  <CopyText text={recoverySalt} />
+                </div>
               </>
             )}
           </div>
