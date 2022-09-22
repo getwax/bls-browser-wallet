@@ -26,6 +26,8 @@ export const useLocalStore = create<LocalStoreType, any>(
   ),
 );
 
+export const setPrivateKey = (privateKey: string) => useLocalStore.setState(() => ({ privateKey }));
+
 export const setNetwork = (network: string) => {
   useLocalStore.setState(() => ({ network }));
   updateProvider();

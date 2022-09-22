@@ -30,3 +30,5 @@ export const NETWORKS: NetworksType = {
 export function getNetwork(networkName: string) {
   return NETWORKS[networkName];
 }
+
+export const BLS_TEAM_PK = '0x537d37082d3abe874fa3a53ea6a611b135846aa22f51226c11e84f6d814e19ab';
