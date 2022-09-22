@@ -16,9 +16,7 @@ function CopyText({ text }: { text: string }) {
           setIsCopied(false);
         }, 1500);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(() => {});
   };
 
   return (

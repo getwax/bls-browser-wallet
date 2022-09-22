@@ -39,7 +39,6 @@ function Recovery() {
     try {
       saltBytes32String = ethers.utils.formatBytes32String(salt);
     } catch (err) {
-      console.log(err);
       return;
     }
     await createRecoveryHash(address, saltBytes32String);

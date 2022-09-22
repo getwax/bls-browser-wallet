@@ -16,7 +16,6 @@ function App() {
   useEffect(() => {
     const getUserAddress = async () => {
       const address = await getAddress();
-      console.log({ address });
       setAccount(address);
     };
     getUserAddress();
