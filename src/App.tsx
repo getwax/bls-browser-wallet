@@ -7,9 +7,21 @@ import Address from './components/address';
 import Send from './components/send';
 import { ToastContext } from './ToastContext';
 import Balance from './components/balance';
+import { getAddress } from './controllers/TransactionController';
+import { setAccount } from './store';
 
 function App() {
   const { message, setMessage } = useContext(ToastContext);
+
+  useEffect(() => {
+    const getUserAddress = async () => {
+      const address = await getAddress();
+      console.log({ address });
+      setAccount(address);
+    };
+    getUserAddress();
+  }, [setAccount]);
+
   useEffect(() => {
     if (message) {
       toast.info(message);
