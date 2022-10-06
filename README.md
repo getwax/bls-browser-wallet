@@ -1,5 +1,9 @@
 # INSTANT BLS
 
+![Instant BLS Wallet](./docs/images/instantbls.png)
+
+https://instant.blswallet.org
+
 An opensource simple Ethereum burner wallet that uses BLS signature aggregation.
 **Important:** This wallet is currently only meant for demoing the uses of the bls-wallet-client module
 and is not meant for mainnet use.
@@ -24,7 +28,7 @@ After following the `bls-wallet` setup steps, you should have
 
 You can now start up the Burner wallet
 
-### `yarn install`
+### `yarn`
 ### `yarn start`
 
 Runs the app in the development mode.\
@@ -32,7 +36,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Testnet development setup
 
-TODO: Arbitrum Rinkeby setup
+- Arbitrum Goerli network information is in the ./src/constants.js file. 
+- You can add other networks, but you will need to make sure an aggregator is running and the contracts are deployed
 
 ## Learn More
 
