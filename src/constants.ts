@@ -16,14 +16,14 @@ export const NETWORKS: NetworksType = {
     chainId: '31337',
     rpcUrl: 'http://localhost:8545',
     aggregatorUrl: 'http://localhost:3000',
-    verificationGateway: '0x3C17E9cF70B774bCf32C66C8aB83D19661Fc27E2',
+    verificationGateway: '0x689A095B4507Bfa302eef8551F90fB322B3451c6',
   },
   arbitrumGoerli: {
     chainId: '421613',
     name: 'Arbitrum Goerli',
     rpcUrl: 'https://goerli-rollup.arbitrum.io/rpc',
     aggregatorUrl: 'https://arbitrum-goerli.blswallet.org',
-    verificationGateway: '0xAf96d6e0817Ff8658f0E2a39b641920fA7fF0957',
+    verificationGateway: '0xae7DF242c589D479A5cF8fEA681736e0E0Bb1FB9',
   },
 };
 

@@ -3716,10 +3716,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-bls-wallet-clients@0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/bls-wallet-clients/-/bls-wallet-clients-0.7.3.tgz#22fae2434c67b642d172023f259131233e396eb7"
-  integrity sha512-u2mwyf5+1KHYCyeutfl4jhEDCmsW/C+S54QKbicUkU26MvAGJ76/TxSOOIBiWTjzVDdDUBdJ/zQRoRd35GSGcQ==
+bls-wallet-clients@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/bls-wallet-clients/-/bls-wallet-clients-0.8.0.tgz#7b6510dede672fcbcfd743caa85a038fa26aad11"
+  integrity sha512-cutglRs+1vRiFPmo5uwMRZRjkeNxr/X3NiyUqsB4VgIRQ+EixCMXvuY7BDok5yby6GWzXox2ZAqJkGTFuHyr2w==
   dependencies:
     "@thehubbleproject/bls" "^0.5.1"
     ethers "5.5.4"
