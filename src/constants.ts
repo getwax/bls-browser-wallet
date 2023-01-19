@@ -21,9 +21,16 @@ export const NETWORKS: NetworksType = {
   arbitrumGoerli: {
     chainId: '421613',
     name: 'Arbitrum Goerli',
-    rpcUrl: 'https://goerli-rollup.arbitrum.io/rpc',
+    rpcUrl: 'https://arb-goerli.g.alchemy.com/v2/HoMEXr6gIgxsgc1XMDiqZrXOUmHMnzMy',
     aggregatorUrl: 'https://arbitrum-goerli.blswallet.org',
     verificationGateway: '0xae7DF242c589D479A5cF8fEA681736e0E0Bb1FB9',
+  },
+  optimismGoerli: {
+    name: 'Optimism Goerli',
+    chainId: '420',
+    rpcUrl: 'https://opt-goerli.g.alchemy.com/v2/hq9O2ZfBbLYPgLAIT2FDcanH2QBOy01x',
+    aggregatorUrl: 'http://optimism-goerli.blswallet.org',
+    verificationGateway: '0x643468269B044bA84D3F2190F601E3579d3236BB',
   },
 };
 

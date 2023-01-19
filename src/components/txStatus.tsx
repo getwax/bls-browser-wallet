@@ -23,7 +23,7 @@ function TxStatus({ setTxFinished, txHash }: TxStatusProps) {
 
     setMessage('Transaction successful');
     setTxFinished(txHash);
-  }, 1000);
+  }, 5000);
 
   return (
     <div />
