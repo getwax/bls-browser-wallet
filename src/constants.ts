@@ -21,9 +21,16 @@ export const NETWORKS: NetworksType = {
   arbitrumGoerli: {
     chainId: '421613',
     name: 'Arbitrum Goerli',
-    rpcUrl: 'https://goerli-rollup.arbitrum.io/rpc',
+    rpcUrl: process.env.REACT_APP_ARBITRUM_GOERLI_RPC ?? '',
     aggregatorUrl: 'https://arbitrum-goerli.blswallet.org',
     verificationGateway: '0xae7DF242c589D479A5cF8fEA681736e0E0Bb1FB9',
+  },
+  optimismGoerli: {
+    name: 'Optimism Goerli',
+    chainId: '420',
+    rpcUrl: process.env.REACT_APP_OPTIMISM_GOERLI_RPC ?? '',
+    aggregatorUrl: 'http://optimism-goerli.blswallet.org',
+    verificationGateway: '0x643468269B044bA84D3F2190F601E3579d3236BB',
   },
 };
 
@@ -31,4 +38,4 @@ export function getNetwork(networkName: string) {
   return NETWORKS[networkName];
 }
 
-export const BLS_TEAM_PK = '0x537d37082d3abe874fa3a53ea6a611b135846aa22f51226c11e84f6d814e19ab';
+export const BLS_TEAM_PK = process.env.REACT_APP_BLS_TEAM_PK ?? '';
