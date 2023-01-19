@@ -13,17 +13,24 @@ type TxStatusProps = {
 // fire a toast when the transaction is completed.
 function TxStatus({ setTxFinished, txHash }: TxStatusProps) {
   const { setMessage } = useContext(ToastContext);
+  let pollingCount = 0;
 
   useInterval(async () => {
     const receipt = await getTransactionReceipt(txHash);
 
+    if (pollingCount > 14) {
+      setMessage('Transaction status polling timed out');
+      setTxFinished(txHash);
+    }
+
     if (receipt === undefined) {
+      pollingCount += 1;
       return;
     }
 
     setMessage('Transaction successful');
     setTxFinished(txHash);
-  }, 1000);
+  }, 4000);
 
   return (
     <div />
