@@ -29,7 +29,7 @@ export const NETWORKS: NetworksType = {
     name: 'Optimism Goerli',
     chainId: '420',
     rpcUrl: process.env.REACT_APP_OPTIMISM_GOERLI_RPC ?? '',
-    aggregatorUrl: 'http://optimism-goerli.blswallet.org',
+    aggregatorUrl: 'https://optimism-goerli.blswallet.org',
     verificationGateway: '0x643468269B044bA84D3F2190F601E3579d3236BB',
   },
 };
