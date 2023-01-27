@@ -22,14 +22,14 @@ export const NETWORKS: NetworksType = {
     chainId: '421613',
     name: 'Arbitrum Goerli',
     rpcUrl: process.env.REACT_APP_ARBITRUM_GOERLI_RPC ?? '',
-    aggregatorUrl: 'https://arbitrum-goerli.blswallet.org',
+    aggregatorUrl: process.env.REACT_APP_ARBITRUM_GOERLI_AGG ?? 'https://arbitrum-goerli.blswallet.org',
     verificationGateway: '0xae7DF242c589D479A5cF8fEA681736e0E0Bb1FB9',
   },
   optimismGoerli: {
     name: 'Optimism Goerli',
     chainId: '420',
     rpcUrl: process.env.REACT_APP_OPTIMISM_GOERLI_RPC ?? '',
-    aggregatorUrl: 'https://optimism-goerli.blswallet.org',
+    aggregatorUrl: process.env.REACT_APP_OPTIMISM_GOERLI_AGG ?? 'https://optimism-goerli.blswallet.org',
     verificationGateway: '0x643468269B044bA84D3F2190F601E3579d3236BB',
   },
 };
