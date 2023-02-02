@@ -39,3 +39,5 @@ export function getNetwork(networkName: string) {
 }
 
 export const BLS_TEAM_PK = process.env.REACT_APP_BLS_TEAM_PK ?? '';
+
+export const RPC_POLLING_INTERVAL = 10000;
