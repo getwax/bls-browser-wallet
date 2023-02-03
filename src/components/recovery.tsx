@@ -35,13 +35,7 @@ function Recovery() {
   }));
 
   const setRecovery = async () => {
-    let saltBytes32String;
-    try {
-      saltBytes32String = ethers.utils.formatBytes32String(salt);
-    } catch (err) {
-      return;
-    }
-    await createRecoveryHash(address, saltBytes32String);
+    await createRecoveryHash(address, salt);
     setRecoverySalt(salt);
     setAddress('');
     setSalt('');

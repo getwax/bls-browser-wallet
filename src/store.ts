@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import { ethers } from 'ethers';
-import { getNetwork } from './constants';
+import { getNetwork, RPC_POLLING_INTERVAL } from './constants';
 
 type LocalStoreType = {
   network: string,
@@ -44,15 +44,19 @@ export const setRecoverySalt = (hash: string) => {
 export const useProvider = create(() => {
   const { network } = useLocalStore.getState();
   const { rpcUrl } = getNetwork(network);
+  const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+  provider.pollingInterval = RPC_POLLING_INTERVAL;
   return {
-    provider: new ethers.providers.JsonRpcProvider(rpcUrl),
+    provider,
   };
 });
 
 export const updateProvider = () => {
   const { network } = useLocalStore.getState();
   const { rpcUrl } = getNetwork(network);
+  const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+  provider.pollingInterval = RPC_POLLING_INTERVAL;
   useProvider.setState(() => ({
-    provider: new ethers.providers.JsonRpcProvider(rpcUrl),
+    provider,
   }));
 };

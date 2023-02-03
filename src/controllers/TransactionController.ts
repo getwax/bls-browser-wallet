@@ -1,5 +1,4 @@
 import { Aggregator, BlsWalletWrapper } from 'bls-wallet-clients';
-import { ethers } from 'ethers';
 
 import { getNetwork } from '../constants';
 import { useLocalStore, useProvider } from '../store';
@@ -94,38 +93,11 @@ export const createRecoveryHash = async (recoveryAddress: string, salt: string) 
     findNetwork().verificationGateway,
     provider,
   );
-  const walletHash = wallet.blsWalletSigner.getPublicKeyHash(wallet.privateKey);
 
-  const recoveryHash = ethers.utils.solidityKeccak256(
-    ['address', 'bytes32', 'bytes32'],
-    [recoveryAddress, walletHash, salt],
+  const bundle = await wallet.getSetRecoveryHashBundle(
+    salt,
+    recoveryAddress,
   );
-
-  const BLSWalletContractABI = [
-    'function setRecoveryHash(bytes32 hash) public',
-  ];
-
-  const BLSWalletContractInstance = new ethers.Contract(
-    wallet.address,
-    BLSWalletContractABI,
-  );
-
-  const contractAddress = BLSWalletContractInstance.address;
-  const encodedFunction = BLSWalletContractInstance.interface.encodeFunctionData(
-    'setRecoveryHash',
-    [recoveryHash],
-  );
-
-  const bundle = wallet.sign({
-    nonce: await wallet.Nonce(),
-    actions: [
-      {
-        ethValue: 0,
-        contractAddress,
-        encodedFunction,
-      },
-    ],
-  });
 
   const agg = new Aggregator(findNetwork().aggregatorUrl);
   const result = await agg.add(bundle);
