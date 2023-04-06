@@ -15,9 +15,9 @@ type LocalStoreType = {
 export const useLocalStore = create<LocalStoreType, any>(
   persist(
     () => ({
-      network: 'arbitrumGoerli',
+      network: 'localhost',
       account: '',
-      privateKey: ethers.Wallet.createRandom().privateKey,
+      privateKey: '',
       recoverySalt: {},
     }),
     {
@@ -59,4 +59,8 @@ export const updateProvider = () => {
   useProvider.setState(() => ({
     provider,
   }));
+};
+
+export const setAccountAndPK = (privateKey: string, account: string) => {
+  useLocalStore.setState(() => ({ privateKey, account }));
 };
