@@ -5,7 +5,7 @@ import { getNetwork, RPC_POLLING_INTERVAL } from './constants';
 
 type LocalStoreType = {
   network: string,
-  account: string,
+  address: string,
   privateKey: string,
   recoverySalt: {
     [key: string]: string,
@@ -16,7 +16,7 @@ export const useLocalStore = create<LocalStoreType, any>(
   persist(
     () => ({
       network: 'localhost',
-      account: '',
+      address: '',
       privateKey: '',
       recoverySalt: {},
     }),
@@ -32,7 +32,7 @@ export const setNetwork = (network: string) => {
   useLocalStore.setState(() => ({ network }));
   updateProvider();
 };
-export const setAccount = (account: string) => useLocalStore.setState(() => ({ account }));
+export const setAddress = (address: string) => useLocalStore.setState(() => ({ address }));
 export const setRecoverySalt = (hash: string) => {
   const { network, recoverySalt } = useLocalStore.getState();
   const newRecoverySalt = { ...recoverySalt, [network]: hash };
@@ -61,6 +61,6 @@ export const updateProvider = () => {
   }));
 };
 
-export const setAccountAndPK = (privateKey: string, account: string) => {
-  useLocalStore.setState(() => ({ privateKey, account }));
+export const setAddressAndPK = (privateKey: string, address: string) => {
+  useLocalStore.setState(() => ({ privateKey, address }));
 };

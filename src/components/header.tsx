@@ -7,7 +7,7 @@ import { PenNibStraight } from 'phosphor-react';
 
 import { getAddress } from '../controllers/TransactionController';
 import { NETWORKS } from '../constants';
-import { setAccount, setNetwork, useLocalStore } from '../store';
+import { setAddress, setNetwork, useLocalStore } from '../store';
 import Recovery from './recovery';
 
 function Header() {
@@ -16,7 +16,7 @@ function Header() {
   const handleChange = async (event: SelectChangeEvent) => {
     setNetwork(event.target.value);
     const address = await getAddress();
-    setAccount(address);
+    setAddress(address);
   };
 
   return (
