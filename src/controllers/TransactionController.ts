@@ -1,7 +1,7 @@
-import { BlsTransaction, createAccount } from 'ethdk';
+import { BlsTransaction } from 'ethdk';
 
 import { getNetwork } from '../constants';
-import { useLocalStore } from '../store';
+import { useLocalStore, getAccount } from '../store';
 
 export type SendTransactionParams = {
   to: string,
@@ -15,14 +15,6 @@ export type SendTransactionParams = {
 function findNetwork() {
   const { network } = useLocalStore.getState();
   return getNetwork(network);
-}
-
-function getAccount(privateKey?: string) {
-  return createAccount({
-    accountType: 'bls',
-    privateKey: privateKey ?? useLocalStore.getState().privateKey,
-    network: findNetwork(),
-  });
 }
 
 export const sendTransaction = async (
@@ -44,11 +36,6 @@ export const getTransactionReceipt = async (hash: string) => {
   });
   const receipt = await transaction.getTransactionReceipt();
   return receipt;
-};
-
-export const getAddress = async (privateKey?: string) => {
-  const account = await getAccount(privateKey);
-  return account.address;
 };
 
 export const createRecoveryHash = async (recoveryAddress: string, salt: string) => {

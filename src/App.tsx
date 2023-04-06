@@ -9,8 +9,7 @@ import Address from './components/address';
 import Send from './components/send';
 import { ToastContext } from './ToastContext';
 import Balance from './components/balance';
-import { getAddress } from './controllers/TransactionController';
-import { setAddress, setAddressAndPK, useLocalStore } from './store';
+import { setPrivateKey, useLocalStore } from './store';
 import { BLS_TEAM_PK } from './constants';
 
 function useQuery() {
@@ -22,33 +21,25 @@ function useQuery() {
 function App() {
   const { message, setMessage } = useContext(ToastContext);
   const privateKey = useLocalStore((state) => state.privateKey);
-  const address = useLocalStore((state) => state.address);
 
   const query = useQuery();
+  const isTeamWallet = query.get('wallet') === 'bls-team';
 
   useEffect(() => {
     const getAccountDetails = async () => {
-      if (query.get('wallet') === 'bls-team' && privateKey !== BLS_TEAM_PK) {
-        const newAddress = await getAddress(BLS_TEAM_PK);
-        setAddressAndPK(BLS_TEAM_PK, newAddress);
+      if (isTeamWallet && privateKey !== BLS_TEAM_PK) {
+        setPrivateKey(BLS_TEAM_PK);
         return;
       }
 
       if (!privateKey) {
         const pk = await BlsAccount.generatePrivateKey();
-        const newAddress = await getAddress(pk);
-        setAddressAndPK(pk, newAddress);
-        return;
-      }
-
-      const newAddress = await getAddress();
-      if (newAddress !== address) {
-        setAddress(address);
+        setPrivateKey(pk);
       }
     };
 
     getAccountDetails();
-  }, [setAddress]);
+  }, [isTeamWallet, privateKey, setPrivateKey]);
 
   useEffect(() => {
     if (message) {
