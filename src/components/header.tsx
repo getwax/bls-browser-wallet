@@ -5,9 +5,8 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PenNibStraight } from 'phosphor-react';
 
-import { getAddress } from '../controllers/TransactionController';
 import { NETWORKS } from '../constants';
-import { setAccount, setNetwork, useLocalStore } from '../store';
+import { setNetwork, useLocalStore } from '../store';
 import Recovery from './recovery';
 
 function Header() {
@@ -15,8 +14,6 @@ function Header() {
 
   const handleChange = async (event: SelectChangeEvent) => {
     setNetwork(event.target.value);
-    const address = await getAddress();
-    setAccount(address);
   };
 
   return (

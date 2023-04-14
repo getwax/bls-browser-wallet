@@ -1,11 +1,12 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import { ethers } from 'ethers';
+import { createAccount } from 'ethdk';
 import { getNetwork, RPC_POLLING_INTERVAL } from './constants';
 
 type LocalStoreType = {
   network: string,
-  account: string,
+  address: string,
   privateKey: string,
   recoverySalt: {
     [key: string]: string,
@@ -15,9 +16,9 @@ type LocalStoreType = {
 export const useLocalStore = create<LocalStoreType, any>(
   persist(
     () => ({
-      network: 'arbitrumGoerli',
-      account: '',
-      privateKey: ethers.Wallet.createRandom().privateKey,
+      network: 'localhost',
+      address: '',
+      privateKey: '',
       recoverySalt: {},
     }),
     {
@@ -26,13 +27,39 @@ export const useLocalStore = create<LocalStoreType, any>(
   ),
 );
 
-export const setPrivateKey = (privateKey: string) => useLocalStore.setState(() => ({ privateKey }));
+export const setPrivateKey = (privateKey: string) => {
+  const { network } = useLocalStore.getState();
+  updateAccountData(privateKey, network);
+};
 
 export const setNetwork = (network: string) => {
-  useLocalStore.setState(() => ({ network }));
-  updateProvider();
+  const { privateKey } = useLocalStore.getState();
+  updateAccountData(privateKey, network);
 };
-export const setAccount = (account: string) => useLocalStore.setState(() => ({ account }));
+
+export const updateAccountData = async (privateKey: string, network: string) => {
+  const account = await createAccount({
+    accountType: 'bls',
+    privateKey,
+    network: getNetwork(network),
+  });
+  useLocalStore.setState(() => ({
+    network,
+    address: account.address,
+    privateKey,
+  }));
+};
+
+export const getAccount = async () => {
+  const { network, privateKey } = useLocalStore.getState();
+
+  return createAccount({
+    accountType: 'bls',
+    privateKey,
+    network: getNetwork(network),
+  });
+};
+
 export const setRecoverySalt = (hash: string) => {
   const { network, recoverySalt } = useLocalStore.getState();
   const newRecoverySalt = { ...recoverySalt, [network]: hash };

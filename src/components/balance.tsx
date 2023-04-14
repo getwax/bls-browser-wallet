@@ -6,8 +6,8 @@ import { useOnBlock } from '../hooks';
 
 function Balance() {
   const [balance, setBalance] = useState('');
-  const { account, network } = useLocalStore((state) => ({
-    account: state.account,
+  const { address, network } = useLocalStore((state) => ({
+    address: state.address,
     network: state.network,
   }));
   const provider = useProvider((state) => state.provider);
@@ -15,7 +15,7 @@ function Balance() {
   useEffect(() => {
     // Get balance when account is first set or changes
     getBalance();
-  }, [account, network]);
+  }, [address, network]);
 
   useOnBlock(provider, () => {
     // Get balance on a new block
@@ -23,10 +23,10 @@ function Balance() {
   });
 
   const getBalance = async () => {
-    if (!account) {
+    if (!address) {
       return;
     }
-    const newBalance = await provider.getBalance(account);
+    const newBalance = await provider.getBalance(address);
     const formattedBalance = ethers.utils.formatEther(newBalance);
 
     if (formattedBalance !== balance) {

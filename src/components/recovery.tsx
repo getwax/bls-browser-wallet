@@ -25,19 +25,19 @@ const style = {
 
 function Recovery() {
   const [open, setOpen] = useState(false);
-  const [address, setAddress] = useState('');
+  const [currAddress, setCurrAddress] = useState('');
   const [salt, setSalt] = useState('');
   const [saltError, setSaltError] = useState(false);
   const { setMessage } = useContext(ToastContext);
-  const { recoverySalt, account } = useLocalStore((state) => ({
+  const { recoverySalt, address } = useLocalStore((state) => ({
     recoverySalt: state.recoverySalt[state.network],
-    account: state.account,
+    address: state.address,
   }));
 
   const setRecovery = async () => {
-    await createRecoveryHash(address, salt);
+    await createRecoveryHash(currAddress, salt);
     setRecoverySalt(salt);
-    setAddress('');
+    setCurrAddress('');
     setSalt('');
     setMessage('Transaction successful');
   };
@@ -69,8 +69,8 @@ function Recovery() {
               className="w-52"
               variant="filled"
               label="Recovery address"
-              value={address}
-              onChange={(event) => setAddress(event.target.value)}
+              value={currAddress}
+              onChange={(event) => setCurrAddress(event.target.value)}
             />
             <TextField
               error={saltError}
@@ -84,7 +84,7 @@ function Recovery() {
             <Button
               variant="contained"
               onClick={setRecovery}
-              disabled={!salt || !address || saltError}
+              disabled={!salt || !currAddress || saltError}
             >
               {recoverySalt ? 'Update' : 'Set'}
               {' '}
@@ -95,7 +95,7 @@ function Recovery() {
                 <p>To recover this wallet, copy the below info to your Quill wallet</p>
                 <div className="flex flex-row w-64 items-center">
                   <p className="mr-auto">Wallet address:</p>
-                  <TextAddress address={account} />
+                  <TextAddress address={address} />
                 </div>
                 <div className="flex flex-row w-64 items-center">
                   <p className="mr-auto">Salt:</p>

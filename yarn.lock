@@ -3718,10 +3718,19 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-bls-wallet-clients@0.8.2-77f1638:
-  version "0.8.2-77f1638"
-  resolved "https://registry.yarnpkg.com/bls-wallet-clients/-/bls-wallet-clients-0.8.2-77f1638.tgz#61212aac502aed821bc6036cb95a2cdaa9c0b67e"
-  integrity sha512-2gTVHUvs4+/fBwgtcZCO+DsKTnJAiebYrpCUdygIqZaFeHdEyp6xU2F8ZT+XOcNoMeN1B9TT5EupV1RTvISFkQ==
+bls-wallet-clients@0.8.2-1452ef5:
+  version "0.8.2-1452ef5"
+  resolved "https://registry.yarnpkg.com/bls-wallet-clients/-/bls-wallet-clients-0.8.2-1452ef5.tgz#d76e938ca45ec5da44c8e59699d1bd5f6c69dcd2"
+  integrity sha512-bg7WLr9NRbvDzj+zgkLNfaPzr1m0m13Cc8RJoZ2s6s+ic7WxSiwxTkZGc2SChFgmG8ZGi1O9DnR6//lrTsMVUA==
+  dependencies:
+    "@thehubbleproject/bls" "^0.5.1"
+    ethers "^5.7.2"
+    node-fetch "2.6.7"
+
+bls-wallet-clients@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/bls-wallet-clients/-/bls-wallet-clients-0.8.3.tgz#7d3ee34ad3508ee730f3c4766980301bc3625d61"
+  integrity sha512-U5CQ7dZXIDmThu7spZyEhAgXyZ1FkamQk5jjV024L3egPr5zhenaeghdRqnjgp5YJ0PuxeFbe0c3SC5s42z7tQ==
   dependencies:
     "@thehubbleproject/bls" "^0.5.1"
     ethers "^5.7.2"
@@ -5297,6 +5306,14 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
+
+ethdk@^0.0.0-beta.4:
+  version "0.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/ethdk/-/ethdk-0.0.0-beta.4.tgz#97e3859d481aa22b3e5e3212ff031fd5c60e293a"
+  integrity sha512-8yvt/3bHju9tH+/QCanmvI/GXH0mTQmN8QuFZjzRrTJuirbSYsuatDgiu8bq/iW/sr0YXdpHPtlGP8HSLi30UA==
+  dependencies:
+    bls-wallet-clients "0.8.2-1452ef5"
+    ethers "^5.7.2"
 
 ethers@^5.5.3:
   version "5.6.9"
