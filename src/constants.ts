@@ -6,7 +6,14 @@ type NetworksType = {
 };
 
 export const NETWORKS: NetworksType = {
-  localhost: networks.BLS_NETWORKS.localhost,
+  arbitrumGoerli: {
+    ...networks.BLS_NETWORKS.arbitrumGoerli,
+    rpcUrl: process.env.REACT_APP_ARBITRUM_GOERLI_RPC ?? '',
+  },
+  optimismGoerli: {
+    ...networks.BLS_NETWORKS.optimismGoerli,
+    rpcUrl: process.env.REACT_APP_OPTIMISM_GOERLI_RPC ?? '',
+  },
 };
 
 export function getNetwork(networkName: string) {
